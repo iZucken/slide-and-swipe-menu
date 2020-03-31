@@ -27,7 +27,18 @@
  * THE SOFTWARE.
  */
 
-(function ($) {
+(function (factory) {
+    if (typeof define === 'function' && define.amd && define.amd.jQuery) {
+        // AMD. Register as anonymous module.
+        define(['jquery'], factory);
+    } else if (typeof module !== 'undefined' && module.exports) {
+        // CommonJS Module
+        factory(require("jquery"));
+    } else {
+        // Browser globals.
+        factory(jQuery);
+    }
+}(function ($, window, document, undefined) {
     'use strict';
     $.fn.slideAndSwipe = function (options) {
         var nav = $(this); // get the element to swipe
@@ -43,7 +54,6 @@
             speed: 250
 
         }, options);
-
         nav.swipe(settings);
 
         /**
@@ -61,10 +71,8 @@
                 }
             }
             var mDistance;
-
             if (phase == 'move' && (direction == 'left')) {
                 if (transInitial < 0) {
-
                     mDistance = transInitial - distance;
                 } else {
                     mDistance = -distance;
@@ -146,4 +154,4 @@
             e.preventDefault();
         });
     };
-})(window.jQuery || window.$);
+}));
